@@ -17,11 +17,13 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ModalFileUploadComponent } from '../components/modal-file-upload/modal-file-upload.component';
+import { ModalImageDisplayComponent } from '../components/modal-image-display/modal-image-display.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ModalFileUploadComponent
+    ModalFileUploadComponent,
+    ModalImageDisplayComponent
   ],
   imports: [
     BrowserModule,

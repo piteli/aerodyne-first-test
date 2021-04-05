@@ -3,6 +3,7 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog';
 import { ModalFileUploadComponent } from '../components/modal-file-upload/modal-file-upload.component';
+import { ModalImageDisplayComponent } from '../components/modal-image-display/modal-image-display.component';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ export class AppComponent implements OnInit {
   showSpinnerBtn: boolean = false;
   listData = [];
   collectionData = [];
-  file : Blob;
+  file : File;
 
   constructor(private snackBar : MatSnackBar,
               public dialog: MatDialog){}
@@ -41,8 +42,8 @@ export class AppComponent implements OnInit {
     this.showSpinnerBtn = !this.showSpinnerBtn;
   }
 
-  showSnackBar(mode){
-    this.snackBar.open('Successfully added new Restaurant Directory!', 'Close', {
+  showSnackBar( message, mode){
+    this.snackBar.open(message, 'Close', {
       duration: 2000,
       panelClass: [mode === 'success' ? 'snackbar-success' : 'snackbar-error']
     });
@@ -51,11 +52,14 @@ export class AppComponent implements OnInit {
   onSubmit(){
     const dialogRef = this.dialog.open(ModalFileUploadComponent, {
       width: '250px',
-      data: {file: ""}
+      data: {file: "", submit : false}
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.file = result;
-      this.submit();
+      console.log('here is a result', result);
+      if(result.submit){
+        this.file = result.file;
+        this.submit();
+      }
     });
   }
 
@@ -101,10 +105,23 @@ export class AppComponent implements OnInit {
 
   resultAdd = (payload) => {
     //finisher
-    this.listData.push({ id: this.collectionData.length ,restaurantName : payload.restaurantName, cityName : payload.cityName});
-    this.collectionData.push({ id: this.collectionData.length ,restaurantName : payload.restaurantName, cityName : payload.cityName});
+    this.listData.push({ id: this.collectionData.length ,restaurantName : payload.restaurantName, cityName : payload.cityName, image : this.file});
+    this.collectionData.push({ id: this.collectionData.length ,restaurantName : payload.restaurantName, cityName : payload.cityName, image : this.file});
     this.form.reset();
-    this.showSnackBar('success');
+    this.showSnackBar('Successfully added new Restaurant Directory!', 'success');
     this.toggleLoadingBtn();
+    this.file = null;
+  }
+
+  viewImage(image){
+    if(image == undefined || image == null){
+      this.showSnackBar('No Image uploaded', 'danger');
+      return;
+    }
+
+    this.dialog.open(ModalImageDisplayComponent, {
+      width: '250px',
+      data : { image }
+    });
   }
 }

@@ -42,7 +42,7 @@
             <span>{{value.restaurantName}}</span>
             <span>{{value.cityName}}</span>
             <div class="btns-container">
-              <button mat-raised-button color="primary" (click)="viewImage()">View Image</button>
+              <button mat-raised-button color="primary" (click)="viewImage(value.image)">View Image</button>
               <button mat-raised-button color="warn" (click)="delete(value.id)">Delete</button>
             </div>
           </div>
