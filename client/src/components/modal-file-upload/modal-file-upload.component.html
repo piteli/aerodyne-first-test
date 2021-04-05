@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Hi There</h1>
+<div mat-dialog-content>
+  <p>Do you want to upload image? If Yes, Please upload the image</p>
+    <input type="file" accept="image/*, .doc,.docx, .pdf" (change)="upload($event)">
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onClose()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data.file" cdkFocusInitial>Okay</button>
+</div>

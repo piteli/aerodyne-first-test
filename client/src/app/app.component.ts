@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatDialog} from '@angular/material/dialog';
+import { ModalFileUploadComponent } from '../components/modal-file-upload/modal-file-upload.component';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +15,10 @@ export class AppComponent implements OnInit {
   showSpinnerBtn: boolean = false;
   listData = [];
   collectionData = [];
+  file : Blob;
 
-  constructor(private snackBar : MatSnackBar){}
+  constructor(private snackBar : MatSnackBar,
+              public dialog: MatDialog){}
 
   ngOnInit(){
     this.setupForm();
@@ -44,7 +48,18 @@ export class AppComponent implements OnInit {
     });
   }
 
-  submit(){
+  onSubmit(){
+    const dialogRef = this.dialog.open(ModalFileUploadComponent, {
+      width: '250px',
+      data: {file: ""}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.file = result;
+      this.submit();
+    });
+  }
+
+  submit = () => {
     let payload = this.form.value;
     this.toggleLoadingBtn();
 

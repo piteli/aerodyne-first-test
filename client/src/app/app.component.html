@@ -15,7 +15,7 @@
     <input formControlName="cityName" matInput placeholder="Ex. Keningau Island">
   </mat-form-field>
 
-  <button *ngIf="!showSpinnerBtn" [disabled]="!form.valid" mat-raised-button color="accent" (click)="submit()">Submit</button>
+  <button *ngIf="!showSpinnerBtn" [disabled]="!form.valid" mat-raised-button color="accent" (click)="onSubmit()">Submit</button>
   <button *ngIf="showSpinnerBtn" [disabled]="true" mat-raised-button color="accent">
     <div class="hide-btn"><span>Submiting... </span> <mat-spinner color="accent" diameter="20"></mat-spinner></div>
   </button>

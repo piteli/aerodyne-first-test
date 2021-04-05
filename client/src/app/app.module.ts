@@ -12,12 +12,16 @@ import {MatCardModule} from '@angular/material/card';
 import {MatListModule} from '@angular/material/list'; 
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSnackBarModule} from '@angular/material/snack-bar'; 
+import {MatDialogModule} from '@angular/material/dialog';
 
+import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ModalFileUploadComponent } from '../components/modal-file-upload/modal-file-upload.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ModalFileUploadComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +35,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatListModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
