@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
   title = 'client';
   form: FormGroup;
   showSpinnerBtn: boolean = false;
-  listData = [{ id: 0, restaurantName : 'value1', cityName : 'value2' }];
+  listData = [];
   collectionData = [];
 
   constructor(private snackBar : MatSnackBar){}
@@ -23,11 +23,11 @@ export class AppComponent implements OnInit {
   setupForm(){
     this.form = new FormGroup({
       restaurantName : new FormControl('', {
-        updateOn : 'blur',
+        updateOn : 'change',
         validators : [Validators.required]
       }),
       cityName : new FormControl('', {
-        updateOn : 'blur',
+        updateOn : 'change',
         validators : [Validators.required]
       })
     });
@@ -58,35 +58,36 @@ export class AppComponent implements OnInit {
 
   search(event){
     const value = event.target.value;
-    console.log(value);
 
     let collection = [];
-    const data = this.listData;
-    this.collectionData = data;
+    const data = this.collectionData;
 
     if(value === ''){
-        this.setState({commentsData : this.collectionComments}); return;
+        this.listData = data; return;
     }
     for(let item of data){
         for(let key in item){
-            console.log(item);
-            console.log('lala');
-            console.log(item[key]);
-            if(((item[key]).toString()).indexOf(value) > -1) collection.push(item); continue;
+            if(((item[key]).toString()).indexOf(value) > -1){
+              collection.push(item); 
+              break;
+            }
         }
     }
-    console.log(this.collectionComments);
-    this.setState({commentsData : collection});
+    console.log(collection);
+    this.listData = collection;
   }
 
   delete(id){
     const findIndex = this.listData.findIndex(c => c.id === id);
+    const findIndex2 = this.collectionData.findIndex(c => c.id === id);
     this.listData.splice(findIndex, 1);
+    this.collectionData.splice(findIndex2, 1);
   }
 
   resultAdd = (payload) => {
     //finisher
-    this.listData.push({ id: this.listData.length ,restaurantName : payload.restaurantName, cityName : payload.cityName});
+    this.listData.push({ id: this.collectionData.length ,restaurantName : payload.restaurantName, cityName : payload.cityName});
+    this.collectionData.push({ id: this.collectionData.length ,restaurantName : payload.restaurantName, cityName : payload.cityName});
     this.form.reset();
     this.showSnackBar('success');
     this.toggleLoadingBtn();
