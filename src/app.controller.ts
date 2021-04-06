@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { AppService } from './app.service';
+import { FileInterceptor } from "@nestjs/platform-express";
 
 class submitDTO {
   restaurantName: string;
-  cityName: number;
+  cityName: string;
   file: File;
 }
 
@@ -21,8 +22,9 @@ export class AppController {
   }
 
   @Post()
-  submit(@Body() data: submitDTO): object {
-    return this.appService.postData(data);
+  @UseInterceptors(FileInterceptor('file'))
+  submit(@UploadedFile() file, @Body() data: submitDTO): object {
+    return this.appService.postData(data, file);
   }
 
   @Delete()
