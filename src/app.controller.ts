@@ -1,18 +1,25 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { AppService } from './app.service';
 
+class submitDTO {
+  restaurantName: string;
+  cityName: number;
+  file: File;
+}
+
+
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  retrieveRestaurantAndCity(): object {
+    return this.appService.getData();
   }
 
   @Post()
-  postSubmit(@Body() test): any{
-    console.log(test);
+  submit(@Body() data: submitDTO): object {
+    return this.appService.postData(data);
   }
   
 }
