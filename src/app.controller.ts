@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete } from '@nestjs/common';
 import { AppService } from './app.service';
 
 class submitDTO {
@@ -7,6 +7,9 @@ class submitDTO {
   file: File;
 }
 
+class deleteDTO {
+  id : string;
+}
 
 @Controller()
 export class AppController {
@@ -20,6 +23,11 @@ export class AppController {
   @Post()
   submit(@Body() data: submitDTO): object {
     return this.appService.postData(data);
+  }
+
+  @Delete()
+  deleteRestaurant(@Body() data : deleteDTO) : object {
+    return this.appService.deleteData(data);
   }
   
 }
