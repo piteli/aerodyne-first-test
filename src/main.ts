@@ -1,32 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as admin from 'firebase-admin';
-import { ServiceAccount } from "firebase-admin";
-import { ConfigService } from '@nestjs/config';
+import firebase from 'firebase';
+
+firebase.initializeApp({
+  apiKey: "AIzaSyDXvLWpE1Tsqyy50wtxSvp4DEavQa2vdeo",
+  authDomain: "breakpoint-d0d86.firebaseapp.com",
+  databaseURL: "https://breakpoint-d0d86.firebaseio.com",
+  projectId: "breakpoint-d0d86",
+  storageBucket: "breakpoint-d0d86.appspot.com",
+  messagingSenderId: "357396356087",
+  appId: "1:357396356087:web:d30dc5a281bc0bbe2eecf2",
+  measurementId: "G-D8T77NYCGG"
+});
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
-  const configService: ConfigService = app.get(ConfigService);
-  // Set the config options
-  const adminConfig: ServiceAccount = {
-    "projectId": configService.get<string>('FIREBASE_PROJECT_ID'),
-    "privateKey": configService.get<string>('FIREBASE_PRIVATE_KEY')
-                               .replace(/\\n/g, '\n'),
-    "clientEmail": configService.get<string>('FIREBASE_CLIENT_EMAIL'),
-  };
-  // Initialize the firebase admin app
-  admin.initializeApp({
-    credential: admin.credential.cert(adminConfig),
-    databaseURL: "https://breakpoint-d0d86.firebaseio.com",
-    storageBucket : "breakpoint-d0d86.appspot.com"
-  });
-
-  app.enableCors({
-    origin: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
-  });
-  await app.listen(configService.get<string>('API_PORT') || 5000);
+  await app.listen(5000);
 }
 bootstrap();

@@ -27,7 +27,10 @@ export class AppComponent implements OnInit {
   }
 
   async loadRestaurantAndCityData(){
+<<<<<<< HEAD
     console.log('wee');
+=======
+>>>>>>> a01efe8... updated
     try{
       const response = await fetch('http://localhost:5000', {method : 'get'});
       const json = await response.json();
