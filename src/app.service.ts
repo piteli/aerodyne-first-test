@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Connection } from 'mongoose';
 import { InjectConnection } from '@nestjs/mongoose';
-import firebase from 'firebase';
+import * as admin from 'firebase-admin';
 
 @Injectable()
 export class AppService {
@@ -19,15 +19,30 @@ export class AppService {
 
   async postData(data, file): Promise<object>{
     try{
-      // const ref = firebase.storage().ref().child('pic');
-      // const snapshot = await ref.put(file);
-      // const image_url = await snapshot.ref.getDownloadURL();
       const response = await this.connection.collection('restaurants')
       .insert({restaurantName : data.restaurantName, cityName : data.cityName});
       return { success : true, data : response };
     }catch(e){
       return { success : false, message : JSON.stringify(e) };
     }
+  }
+
+  postData2(data, file): any{
+      
+    /* Using Firebase Admin SDK */
+    
+    const bucket = admin.storage().bucket('restaurants');
+    const blob = bucket.file(file.originalname);
+    const blobStream = blob.createWriteStream();
+
+    blobStream.on('finish', async() => {
+        // The public URL can be used to directly access the file via HTTP.
+        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+        const response = await this.connection.collection('restaurants')
+        .insert({restaurantName : data.restaurantName, cityName : data.cityName, image : publicUrl});
+    });
+
+    blobStream.end(file.buffer);
   }
 
   async deleteData(data): Promise<object> {
