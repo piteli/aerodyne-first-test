@@ -24,7 +24,7 @@ export class AppController {
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   submit(@UploadedFile() file, @Body() data: submitDTO): object {
-    return this.appService.postData(data, file);
+    return this.appService.postData2(data, file);
   }
 
   @Delete()
